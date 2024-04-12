@@ -1,6 +1,6 @@
 {
   "name": "pixie-admin",
-  "private": true,
+  "private": false,
   "homepage": "https://gtungatkar.github.io/pixie-admin",
   "scripts": {
     "dev": "vite",
