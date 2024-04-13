@@ -4,13 +4,13 @@
   "homepage": "https://gtungatkar.github.io/pixie-admin",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --outDir=build",
     "serve": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "format": "prettier --write ./src",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "gh-pages": "^6.1.1",
