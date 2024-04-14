@@ -23,6 +23,12 @@ export const App = () => (
       show={ShowGuesser}
     />
     <Resource
+      name="users"
+      list={ListGuesser}
+      edit={EditGuesser}
+      show={ShowGuesser}
+    />
+    <Resource
       name="creator_books"
       list={ListGuesser}
       edit={EditGuesser}
