@@ -89,4 +89,20 @@ import { supabaseAuthProvider } from 'ra-supabase';
 import { supabaseClient } from './supabase';
 
 export const authProvider = supabaseAuthProvider(supabaseClient, {
+  getIdentity: async user => {
+    // const { data, error } = await supabase
+    //     .from('userProfiles')
+    //     .select('id, first_name, last_name')
+    //     .match({ email: user.email })
+    //     .single();
+
+    // if (!data || error) {
+    //     throw new Error();
+    // }
+
+    return {
+        id: "foo",
+        fullName: `GT`,
+    };
+},
 });
