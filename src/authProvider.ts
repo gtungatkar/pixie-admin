@@ -1,42 +1,42 @@
-import { AuthProvider, HttpError } from "react-admin";
-import data from "./users.json";
-import { SupabaseClient } from "@supabase/supabase-js";
+// import { AuthProvider, HttpError } from "react-admin";
+// import data from "./users.json";
+// import { SupabaseClient } from "@supabase/supabase-js";
 
-export const authProvider = (client: SupabaseClient): AuthProvider => {
-  return {
-    login: async ({ username, password }) => {
+// export const authProvider = (client: SupabaseClient): AuthProvider => {
+//   return {
+//     login: async ({ username, password }) => {
 
-      const { data, error } = await client.auth.signInWithPassword({"email": username, "password": password});
-      if (error) {
-        throw error;
-    }
-    localStorage.setItem("user", JSON.stringify(data.user));
-    return;
+//       const { data, error } = await client.auth.signInWithPassword({"email": username, "password": password});
+//       if (error) {
+//         throw error;
+//     }
+//     localStorage.setItem("user", JSON.stringify(data.user));
+//     return;
 
-      // return Promise.reject(
-      //   new HttpError("Unauthorized", 401, {
-      //     message: "Invalid username or password",
-      //   })
-      // );
-    },
-    logout: () => {
-      localStorage.removeItem("user");
-      return Promise.resolve();
-    },
-    checkError: () => Promise.resolve(),
-    checkAuth: () =>
-      localStorage.getItem("user") ? Promise.resolve() : Promise.reject(),
-    getPermissions: () => {
-      return Promise.resolve(undefined);
-    },
-    getIdentity: () => {
-      const persistedUser = localStorage.getItem("user");
-      const user = persistedUser ? JSON.parse(persistedUser) : null;
+//       // return Promise.reject(
+//       //   new HttpError("Unauthorized", 401, {
+//       //     message: "Invalid username or password",
+//       //   })
+//       // );
+//     },
+//     logout: () => {
+//       localStorage.removeItem("user");
+//       return Promise.resolve();
+//     },
+//     checkError: () => Promise.resolve(),
+//     checkAuth: () =>
+//       localStorage.getItem("user") ? Promise.resolve() : Promise.reject(),
+//     getPermissions: () => {
+//       return Promise.resolve(undefined);
+//     },
+//     getIdentity: () => {
+//       const persistedUser = localStorage.getItem("user");
+//       const user = persistedUser ? JSON.parse(persistedUser) : null;
 
-      return Promise.resolve(user);
-    },
-  }
-};
+//       return Promise.resolve(user);
+//     },
+//   }
+// };
 
 /**
  * This authProvider is only for test purposes. Don't use it in production.
@@ -84,3 +84,9 @@ export const authProvider = (client: SupabaseClient): AuthProvider => {
 
 // export const authProvider = supabaseAuthProvider(supabaseClient, {
 //   });
+
+import { supabaseAuthProvider } from 'ra-supabase';
+import { supabaseClient } from './supabase';
+
+export const authProvider = supabaseAuthProvider(supabaseClient, {
+});
