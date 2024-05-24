@@ -7,7 +7,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     const authToken = localStorage.getItem("user");
     const customHeaders = (options.headers ||
         new Headers({
-            Accept: 'application/json',
+            // Accept: 'application/json',
         })) as Headers;
     // add your own headers here
     customHeaders.set('Authorization', `Bearer ${authToken}`);
@@ -23,10 +23,6 @@ export const customDataProvider = (
     return {
         create: async (resource, params) => {
             if (resource == 'book_drafts') {
-                console.log("FOOBAR1")
-                const authToken = localStorage.getItem("user");
-                console.log("FOOBAR2")
-
                 const { json } = await httpClient(`${apiUrl}`, {
                     method: 'POST',
                     body: JSON.stringify(params.data)
@@ -35,11 +31,6 @@ export const customDataProvider = (
             } else {
                 return defaultSupabaseProvider.create(resource, params);
             }
-            // const { json } = await httpClient(`${apiUrl}}`, {
-            //     method: 'POST',
-            //     body: JSON.stringify(params.data),
-            // })
-            // return { data: json };
         },
         getList: (resource, params) => defaultSupabaseProvider.getList(resource, params),
         getOne: (resource, params) => defaultSupabaseProvider.getOne(resource, params),

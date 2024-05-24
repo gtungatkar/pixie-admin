@@ -7,7 +7,7 @@ import {
 } from "react-admin";
 import { combDataProvider } from "./customDataProvider";
 import { authProvider } from "./authProvider";
-import { StoryCreate } from "./newStory";
+import { StoryCreate, DraftEdit } from "./newStory";
 
 export const App = () => (
   <Admin dataProvider={combDataProvider} authProvider={authProvider}>
@@ -26,7 +26,7 @@ export const App = () => (
     <Resource
       name="book_drafts"
       list={ListGuesser}
-      edit={EditGuesser}
+      edit={DraftEdit}
       show={ShowGuesser}
       create={StoryCreate}
     /> 
