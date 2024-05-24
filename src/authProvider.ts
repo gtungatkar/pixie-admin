@@ -1,82 +1,39 @@
-// import { AuthProvider, HttpError } from "react-admin";
-// import data from "./users.json";
-// import { SupabaseClient } from "@supabase/supabase-js";
+import { AuthProvider } from "react-admin";
+import { supabaseClient } from './supabase';
 
-// export const authProvider = (client: SupabaseClient): AuthProvider => {
-//   return {
-//     login: async ({ username, password }) => {
 
-//       const { data, error } = await client.auth.signInWithPassword({"email": username, "password": password});
-//       if (error) {
-//         throw error;
-//     }
-//     localStorage.setItem("user", JSON.stringify(data.user));
-//     return;
+export const authProvider: AuthProvider = {
+    login: ({ username, password }) => {
+      return supabaseClient.auth.signInWithPassword({"email": username, "password": password})
+      .then(response => {
+        if (response.error) {
+          throw response.error;
+        }
+        const authToken = response.data.session.access_token 
+        localStorage.setItem("user", authToken);
+        localStorage.setItem("identity", JSON.stringify(response.data.user))
+      }).catch(() => {
+        throw new Error('Invalid login parameters')
+    })
+    },
+    logout: async () => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("identity")
+      return Promise.resolve();
+    },
+    checkError: () => Promise.resolve(),
+    checkAuth: () =>  localStorage.getItem('user') ? Promise.resolve() : Promise.reject(),
+    getPermissions: () => {
+      return Promise.resolve(undefined);
+    },
+    getIdentity: () => {
+      const persistedUser = localStorage.getItem("identity");
+      const user = persistedUser ? JSON.parse(persistedUser) : null;
 
-//       // return Promise.reject(
-//       //   new HttpError("Unauthorized", 401, {
-//       //     message: "Invalid username or password",
-//       //   })
-//       // );
-//     },
-//     logout: () => {
-//       localStorage.removeItem("user");
-//       return Promise.resolve();
-//     },
-//     checkError: () => Promise.resolve(),
-//     checkAuth: () =>
-//       localStorage.getItem("user") ? Promise.resolve() : Promise.reject(),
-//     getPermissions: () => {
-//       return Promise.resolve(undefined);
-//     },
-//     getIdentity: () => {
-//       const persistedUser = localStorage.getItem("user");
-//       const user = persistedUser ? JSON.parse(persistedUser) : null;
+      return Promise.resolve(user);
+    },
+};
 
-//       return Promise.resolve(user);
-//     },
-//   }
-// };
-
-/**
- * This authProvider is only for test purposes. Don't use it in production.
- */
-// export const authProvider: AuthProvider = {
-//   login: ({ username, password }) => {
-//     const user = data.users.find(
-//       (u) => u.username === username && u.password === password
-//     );
-
-//     if (user) {
-//       // eslint-disable-next-line no-unused-vars
-//       let { password, ...userToPersist } = user;
-//       localStorage.setItem("user", JSON.stringify(userToPersist));
-//       return Promise.resolve();
-//     }
-
-//     return Promise.reject(
-//       new HttpError("Unauthorized", 401, {
-//         message: "Invalid username or password",
-//       })
-//     );
-//   },
-//   logout: () => {
-//     localStorage.removeItem("user");
-//     return Promise.resolve();
-//   },
-//   checkError: () => Promise.resolve(),
-//   checkAuth: () =>
-//     localStorage.getItem("user") ? Promise.resolve() : Promise.reject(),
-//   getPermissions: () => {
-//     return Promise.resolve(undefined);
-//   },
-//   getIdentity: () => {
-//     const persistedUser = localStorage.getItem("user");
-//     const user = persistedUser ? JSON.parse(persistedUser) : null;
-
-//     return Promise.resolve(user);
-//   },
-// };
 
 // export default authProvider;
 // import { supabaseAuthProvider } from 'ra-supabase-core';
@@ -85,24 +42,24 @@
 // export const authProvider = supabaseAuthProvider(supabaseClient, {
 //   });
 
-import { supabaseAuthProvider } from 'ra-supabase';
-import { supabaseClient } from './supabase';
+// import { supabaseAuthProvider } from 'ra-supabase';
+// import { supabaseClient } from './supabase';
 
-export const authProvider = supabaseAuthProvider(supabaseClient, {
-  getIdentity: async user => {
-    // const { data, error } = await supabase
-    //     .from('userProfiles')
-    //     .select('id, first_name, last_name')
-    //     .match({ email: user.email })
-    //     .single();
+// export const authProvider = supabaseAuthProvider(supabaseClient, {
+//   getIdentity: async user => {
+//     // const { data, error } = await supabase
+//     //     .from('userProfiles')
+//     //     .select('id, first_name, last_name')
+//     //     .match({ email: user.email })
+//     //     .single();
 
-    // if (!data || error) {
-    //     throw new Error();
-    // }
+//     // if (!data || error) {
+//     //     throw new Error();
+//     // }
 
-    return {
-        id: "foo",
-        fullName: `GT`,
-    };
-},
-});
+//     return {
+//         id: "foo",
+//         fullName: `GT`,
+//     };
+// },
+// });

@@ -5,19 +5,14 @@ import {
   EditGuesser,
   ShowGuesser,
 } from "react-admin";
-import { dataProvider } from "./dataProvider";
+import { combDataProvider } from "./customDataProvider";
 import { authProvider } from "./authProvider";
+import { StoryCreate } from "./newStory";
 
 export const App = () => (
-  <Admin dataProvider={dataProvider} authProvider={authProvider}>
+  <Admin dataProvider={combDataProvider} authProvider={authProvider}>
     <Resource
       name="books"
-      list={ListGuesser}
-      edit={EditGuesser}
-      show={ShowGuesser}
-    />
-    <Resource
-      name="book_shelfs"
       list={ListGuesser}
       edit={EditGuesser}
       show={ShowGuesser}
@@ -29,16 +24,11 @@ export const App = () => (
       show={ShowGuesser}
     />
     <Resource
-      name="creator_books"
+      name="book_drafts"
       list={ListGuesser}
       edit={EditGuesser}
       show={ShowGuesser}
-    />
-    <Resource
-      name="stacks"
-      list={ListGuesser}
-      edit={EditGuesser}
-      show={ShowGuesser}
-    />
+      create={StoryCreate}
+    /> 
   </Admin>
 );
